@@ -16,7 +16,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/auth/login:
+ * /auth/login:
  *   post:
  *     summary: Iniciar sesión
  *     tags: [Auth]
@@ -55,7 +55,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/auth/register:
+ * /auth/register:
  *   post:
  *     summary: Registrar un nuevo usuario
  *     tags: [Auth]
@@ -98,4 +98,3 @@ module.exports = router;
  *       500:
  *         description: Error al procesar la solicitud.
  */
-
