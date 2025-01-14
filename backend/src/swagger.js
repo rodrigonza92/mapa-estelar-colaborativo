@@ -10,7 +10,7 @@ const options = {
             description: 'Documentación de la API para la gestión de observaciones astronómicas',
         },
     },
-    apis: ['./src/routes/*.js'], // Ruta a los archivos de rutas
+    apis: ['./src/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJsDoc(options);
