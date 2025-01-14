@@ -22,14 +22,15 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { first_name, last_name, email, password, rol } = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = await createUsuario({ first_name, last_name, email, password: hashedPassword, rol });
-    res.status(201).send({ id: userId, message: 'Usuario creado exitosamente.' });
-  } catch (err) {
-    res.status(500).send('Error al procesar la solicitud.');
-  }
-};
-
-module.exports = { login, register };
+    const { first_name, last_name, email, password, rol } = req.body;
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const userId = await createUsuario({ first_name, last_name, email, password: hashedPassword, rol });
+      res.status(201).send({ id: userId, message: 'Usuario creado exitosamente.' });
+    } catch (err) {
+      res.status(500).send('Error al procesar la solicitud.');
+    }
+  };
+  
+  module.exports = { login, register };
+  
