@@ -15,6 +15,10 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const objectRoutes = require('./routes/objectRoutes');
 const observationRoutes = require('./routes/observationRoutes');
+const photographyRoutes = require('./routes/photographyRoutes');
+const validateRoutes = require('./routes/validateRoutes');
+const favoritesRoutes = require('./routes/favoritesRoutes');
+
 const setupSwagger = require('./swagger');
 
 const app = express();
@@ -24,6 +28,9 @@ app.use('/auth', authRoutes);
 app.use('/usuarios', userRoutes);
 app.use('/objetos', objectRoutes);
 app.use('/observaciones', observationRoutes);
+app.use('/fotografias', photographyRoutes);
+app.use('/validar', validateRoutes);
+app.use('/favoritos', favoritesRoutes);
 
 setupSwagger(app);
 
