@@ -16,7 +16,7 @@ module.exports = router;
  * /objetos:
  *   get:
  *     summary: Obtener todos los objetos
- *     tags: [Objetos]
+ *     tags: [Objetos Celestes]
  *     responses:
  *       200:
  *         description: Lista de objetos
@@ -46,7 +46,7 @@ module.exports = router;
  * /objetos:
  *   post:
  *     summary: Crear un nuevo objeto
- *     tags: [Objetos]
+ *     tags: [Objetos Celestes]
  *     requestBody:
  *       required: true
  *       content:
@@ -75,7 +75,7 @@ module.exports = router;
  * /objetos/{id}:
  *   get:
  *     summary: Obtener un objeto por ID
- *     tags: [Objetos]
+ *     tags: [Objetos Celestes]
  *     parameters:
  *       - in: path
  *         name: id
@@ -97,7 +97,7 @@ module.exports = router;
  * /objetos/{id}:
  *   put:
  *     summary: Actualizar un objeto por ID
- *     tags: [Objetos]
+ *     tags: [Objetos Celestes]
  *     parameters:
  *       - in: path
  *         name: id
@@ -135,7 +135,7 @@ module.exports = router;
  * /objetos/{id}:
  *   delete:
  *     summary: Eliminar un objeto por ID
- *     tags: [Objetos]
+ *     tags: [Objetos Celestes]
  *     parameters:
  *       - in: path
  *         name: id

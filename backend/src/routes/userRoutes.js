@@ -14,9 +14,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/usuarios:
+ * /usuarios:
  *   get:
  *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
  *     responses:
  *       200:
  *         description: Lista de usuarios
@@ -24,9 +25,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/usuarios:
+ * /usuarios:
  *   post:
  *     summary: Crear un nuevo usuario
+ *     tags: [Usuarios]
  *     requestBody:
  *       required: true
  *       content:
@@ -56,9 +58,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/usuarios/{id}:
+ * /usuarios/{id}:
  *   get:
  *     summary: Obtiene un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -75,9 +78,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/usuarios/{id}:
+ * /usuarios/{id}:
  *   put:
  *     summary: Actualiza un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -111,9 +115,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/usuarios/{id}:
+ * /usuarios/{id}:
  *   delete:
  *     summary: Elimina un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -125,5 +130,4 @@ module.exports = router;
  *       200:
  *         description: Usuario eliminado
  */
-
 
