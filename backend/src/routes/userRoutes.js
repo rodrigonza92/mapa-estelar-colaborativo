@@ -17,6 +17,7 @@ module.exports = router;
  * /usuarios:
  *   get:
  *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
  *     responses:
  *       200:
  *         description: Lista de usuarios
@@ -27,6 +28,7 @@ module.exports = router;
  * /usuarios:
  *   post:
  *     summary: Crear un nuevo usuario
+ *     tags: [Usuarios]
  *     requestBody:
  *       required: true
  *       content:
@@ -59,6 +61,7 @@ module.exports = router;
  * /usuarios/{id}:
  *   get:
  *     summary: Obtiene un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -78,6 +81,7 @@ module.exports = router;
  * /usuarios/{id}:
  *   put:
  *     summary: Actualiza un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -114,6 +118,7 @@ module.exports = router;
  * /usuarios/{id}:
  *   delete:
  *     summary: Elimina un usuario por ID
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id

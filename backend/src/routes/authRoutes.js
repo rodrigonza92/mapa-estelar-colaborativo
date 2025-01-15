@@ -9,17 +9,10 @@ module.exports = router;
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: Endpoints para autenticación y registro
- */
-
-/**
- * @swagger
  * /auth/login:
  *   post:
  *     summary: Iniciar sesión
- *     tags: [Auth]
+ *     tags: [Autenticacion]
  *     requestBody:
  *       required: true
  *       content:
@@ -58,7 +51,7 @@ module.exports = router;
  * /auth/register:
  *   post:
  *     summary: Registrar un nuevo usuario
- *     tags: [Auth]
+ *     tags: [Autenticacion]
  *     requestBody:
  *       required: true
  *       content:
