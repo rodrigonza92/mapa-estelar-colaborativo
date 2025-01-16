@@ -15,7 +15,7 @@ exports.createFotografia = (req, res) => {
         return res.status(400).json({ error: 'Faltan campos requeridos' });
     }
 
-    const query = 'INSERT INTO Fotografia (img_path, exposure_time, ISO, applied_processing, state, ID_observation, id_validation) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO Fotografia (img_path, exposure_time, ISO, applied_processing, state, id_observation, id_validation) VALUES (?, ?, ?, ?, ?, ?, ?)';
     db.query(query, [img_path, exposure_time, ISO, applied_processing, state, ID_observation, id_validation], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.status(201).json({ message: 'Fotografía creada', id: results.insertId });
@@ -24,7 +24,7 @@ exports.createFotografia = (req, res) => {
 
 exports.getFotografiaById = (req, res) => {
     const { id } = req.params;
-    db.query('SELECT * FROM Fotografia WHERE ID_img = ?', [id], (err, results) => {
+    db.query('SELECT * FROM Fotografia WHERE id_img = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ message: 'Fotografía no encontrada' });
         res.json(results[0]);
@@ -33,14 +33,14 @@ exports.getFotografiaById = (req, res) => {
 
 exports.updateFotografia = (req, res) => {
     const { id } = req.params;
-    const { img_path, exposure_time, ISO, applied_processing, state, ID_observation, id_validation } = req.body;
+    const { img_path, exposure_time, ISO, applied_processing, state, id_observation, id_validation } = req.body;
 
-    if (!img_path || !exposure_time || !ISO || !ID_observation) {
+    if (!img_path || !exposure_time || !ISO || !id_observation) {
         return res.status(400).json({ error: 'Faltan campos requeridos' });
     }
 
-    const query = 'UPDATE Fotografia SET img_path = ?, exposure_time = ?, ISO = ?, applied_processing = ?, state = ?, ID_observation = ?, id_validation = ? WHERE ID_img = ?';
-    db.query(query, [img_path, exposure_time, ISO, applied_processing, state, ID_observation, id_validation, id], (err, results) => {
+    const query = 'UPDATE Fotografia SET img_path = ?, exposure_time = ?, ISO = ?, applied_processing = ?, state = ?, id_observation = ?, id_validation = ? WHERE id_img = ?';
+    db.query(query, [img_path, exposure_time, ISO, applied_processing, state, id_observation, id_validation, id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.affectedRows === 0) return res.status(404).json({ message: 'Fotografía no encontrada' });
         res.json({ message: 'Fotografía actualizada' });
@@ -49,7 +49,7 @@ exports.updateFotografia = (req, res) => {
 
 exports.deleteFotografia = (req, res) => {
     const { id } = req.params;
-    db.query('DELETE FROM Fotografia WHERE ID_img = ?', [id], (err, results) => {
+    db.query('DELETE FROM Fotografia WHERE id_img = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.affectedRows === 0) return res.status(404).json({ message: 'Fotografía no encontrada' });
         res.json({ message: 'Fotografía eliminada' });

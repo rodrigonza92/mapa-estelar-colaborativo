@@ -1,7 +1,5 @@
 const db = require('../config/database');
 
-// ... (resto de las funciones)
-
 // Marcar una fotografía como favorita
 exports.markAsFavorite = (req, res) => {
     const { id_user, id_object } = req.body;
@@ -25,7 +23,7 @@ exports.removeFromFavorites = (req, res) => {
 // Obtener las fotografías favoritas de un usuario
 exports.getFavoritesByUser = (req, res) => {
     const { id_user } = req.params;
-    const query = 'SELECT * FROM Fotografia WHERE ID_img IN (SELECT id_object FROM Favoritos WHERE id_user = ?)';
+    const query = 'SELECT * FROM Fotografia WHERE id_img IN (SELECT id_object FROM Favoritos WHERE id_user = ?)';
     db.query(query, [id_user], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
