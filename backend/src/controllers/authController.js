@@ -5,7 +5,6 @@ const { getUsuarioByEmail, createUsuario } = require('../services/usuarioService
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validación inicial
   if (!email || !password) {
     return res.status(400).send('Email y contraseña son requeridos.');
   }
@@ -35,7 +34,6 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   const { first_name, last_name, email, password, rol } = req.body;
 
-  // Validación inicial
   if (!first_name || !last_name || !email || !password || !rol) {
     return res.status(400).send('Todos los campos son requeridos.');
   }
