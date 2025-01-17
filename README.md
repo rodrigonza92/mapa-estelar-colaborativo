@@ -90,6 +90,7 @@ Este proyecto fue desarrollado por:
 - Gonza Rodrigo Eduarco
 - Chumacero Rene Alfredo
 - Karen Nilda Gutierrez
+- Ramos, Eugenia Silvia
 
 ---
 
