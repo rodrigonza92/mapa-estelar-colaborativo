@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const objetoController = require('../controllers/objectController');
 
-// Rutas para Objeto
 router.get('/', objetoController.getObjetos);
 router.post('/', objetoController.createObjeto);
 router.get('/:id', objetoController.getObjetoById);

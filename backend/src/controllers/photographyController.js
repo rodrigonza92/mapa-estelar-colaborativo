@@ -1,4 +1,4 @@
-const db = require('../config/database'); // Importar la conexión a la base de datos
+const db = require('../config/database');
 
 // CONTROLADOR PARA FOTOGRAFÍA
 exports.getFotografias = (req, res) => {
