@@ -22,6 +22,14 @@ const favoritesRoutes = require('./routes/favoritesRoutes');
 const setupSwagger = require('./swagger');
 
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Dirección del frontend
+    methods: 'GET,POST,PUT,DELETE', // Métodos permitidos
+    allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
+}));
+
 app.use(express.json());
 
 app.use('/auth', authRoutes);
