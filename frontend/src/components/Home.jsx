@@ -1,12 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Header from "./ui/Header";
+import Footer from "./ui/Footer";
+import WelcomeSection from "./pages/WelcomeSection";
+import FeaturedObjects from "./pages/home/FeaturedObjects";
+import RecentObservations from "./pages/home/RecentObservations";
 
 function Home() {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Bienvenido al Mapa Estelar</h1>
-      <p>Por favor, inicia sesión para acceder a la aplicación.</p>
-      <Link to="/login">Iniciar Sesión</Link>
+    <div>
+      <Header />
+      <WelcomeSection />
+      <FeaturedObjects />
+      <RecentObservations />
+      <Footer />
     </div>
   );
 }

@@ -25,9 +25,9 @@ const app = express();
 const cors = require('cors');
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Dirección del frontend
-    methods: 'GET,POST,PUT,DELETE', // Métodos permitidos
-    allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
+    origin: 'http://localhost:5173',
+    methods: 'GET,POST,PUT,DELETE', 
+    allowedHeaders: 'Content-Type,Authorization',
 }));
 
 app.use(express.json());
