@@ -1,5 +1,6 @@
 const db = require('../config/database');
 
+//Obtener validacion
 exports.getValidaciones = (req, res) => {
     db.query('SELECT * FROM Validacion', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -7,6 +8,7 @@ exports.getValidaciones = (req, res) => {
     });
 };
 
+// Crear validacion
 exports.createValidacion = (req, res) => {
     const { score, comments, ID_validador } = req.body;
 
