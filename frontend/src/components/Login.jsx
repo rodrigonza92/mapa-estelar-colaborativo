@@ -73,12 +73,12 @@ function Login() {
         </form>
         <p className="text-gray-400 text-sm text-center mt-4">
           ¿No tienes una cuenta?{" "}
-          <a
-            href="/signup"
-            className="text-blue-500 hover:underline hover:text-blue-400"
+          <span
+            onClick={() => navigate("/register")}
+            className="text-blue-500 hover:underline hover:text-blue-400 cursor-pointer"
           >
             Regístrate aquí
-          </a>
+          </span>
         </p>
       </div>
     </section>

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Main from "./components/Main";
+import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route 
           path="/main" 
           element={
