@@ -50,7 +50,7 @@ Cada sprint incluye reuniones de planificación, revisiones y retrospectivas. El
 - **Frontend**: ReactJS
 - **Backend**: Node.js con API RESTful
 - **Autenticación**: JSON Web Tokens (JWT)
-- **Base de Datos**: PostgreSQL
+- **Base de Datos**: MySQL
 - **Despliegue**: Servidores en producción para frontend y backend
 - **Control de Versiones**: GitHub Projects para la gestión del repositorio y tareas
 
