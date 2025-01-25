@@ -1,5 +1,7 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import HeaderMain from "./ui/HeaderMain"; // Asegúrate de que esta ruta sea correcta.
+import background from "../assets/background.jpg"; // Ajusta la ruta según la ubicación de tu archivo.
 
 function Main() {
   const { user, logout } = useAuth();
