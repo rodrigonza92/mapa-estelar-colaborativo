@@ -7,7 +7,7 @@ function Register() {
     last_name: "",
     email: "",
     password: "",
-    rol: "Observador", // Valor predeterminado
+    rol: "Principiante",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -25,7 +25,6 @@ function Register() {
     setSuccess(null);
 
     try {
-      // Realizar solicitud POST a la API
       const response = await axios.post("http://localhost:3000/auth/register", formData);
       setSuccess("Usuario registrado con éxito");
     } catch (err) {

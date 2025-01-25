@@ -19,7 +19,6 @@ function Login() {
       });
       
       const { token, user } = response.data;
-      console.log(token, user);
       login(token, user);
       navigate("/main");
     } catch (err) {
