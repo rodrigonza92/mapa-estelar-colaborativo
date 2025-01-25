@@ -17,14 +17,27 @@ function Login() {
         email,
         password,
       });
-      
-      const { token, user } = response.data;
-      login(token, user);
+  
+      const { token } = response.data;
+  
+      // Obtener datos del usuario con el token
+      const profileResponse = await axios.get("http://localhost:3000/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const user = profileResponse.data;
+  
+      // Pasar token y datos del usuario al contexto
+      login(user, token);
       navigate("/main");
     } catch (err) {
+      console.error("Error al iniciar sesión:", err);
       setError("Credenciales incorrectas");
     }
   };
+  
 
   return (
     <section className="bg-gradient-to-b from-black to-blue-900 min-h-screen flex items-center justify-center">

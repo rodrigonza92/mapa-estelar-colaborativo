@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     if (token && userData) {
       try {
         const parsedUser = JSON.parse(userData);
-        setUser(parsedUser); 
+        setUser(parsedUser);
       } catch (error) {
         console.error("Error al parsear el usuario desde localStorage:", error);
         localStorage.removeItem("user");
