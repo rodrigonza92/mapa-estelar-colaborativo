@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +17,9 @@ function Login() {
         email,
         password,
       });
-      localStorage.setItem("token", response.data.token);
+      
+      const { token, user } = response.data;
+      login(token, user);
       navigate("/main");
     } catch (err) {
       setError("Credenciales incorrectas");
