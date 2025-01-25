@@ -28,7 +28,7 @@ const swaggerSpec = {
                             schema: {
                                 type: 'object',
                                 properties: {
-                                    email: { type: 'string', example: 'user@example.com' },
+                                    email: { type: 'string', example: 'juan.perez@example.com' },
                                     password: { type: 'string', example: 'password123' },
                                 },
                             },
@@ -152,6 +152,84 @@ const swaggerSpec = {
         },
     },
 },
+        '/profile_data': {
+    get: {
+        summary: 'Obtener datos del perfil del usuario autenticado',
+        tags: ['Usuarios'],
+        security: [
+            {
+                BearerAuth: [],
+            },
+        ],
+        responses: {
+            200: {
+                description: 'Datos del perfil obtenidos exitosamente',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                id_user: { type: 'integer', example: 1 },
+                                first_name: { type: 'string', example: 'Juan' },
+                                last_name: { type: 'string', example: 'Pérez' },
+                                email: { type: 'string', example: 'juan.perez@example.com' },
+                                rol: { type: 'string', example: 'avanzado' },
+                                points: { type: 'integer', example: 100 },
+                                registration_date: { type: 'string', format: 'date', example: '2023-01-15' },
+                            },
+                        },
+                    },
+                },
+            },
+            401: { description: 'Usuario no autenticado o token inválido' },
+            500: { description: 'Error al procesar la solicitud' },
+        },
+    },
+    patch: {
+        summary: 'Actualizar datos del perfil del usuario autenticado',
+        tags: ['Usuarios'],
+        security: [
+            {
+                BearerAuth: [],
+            },
+        ],
+        requestBody: {
+            required: true,
+            content: {
+                'application/json': {
+                    schema: {
+                        type: 'object',
+                        properties: {
+                            first_name: { type: 'string', example: 'Juan' },
+                            last_name: { type: 'string', example: 'Pérez' },
+                            email: { type: 'string', example: 'juan.perez@example.com' },
+                            password: { type: 'string', example: 'nueva_password123' },
+                        },
+                    },
+                },
+            },
+        },
+        responses: {
+            200: {
+                description: 'Perfil actualizado exitosamente',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                message: { type: 'string', example: 'Perfil actualizado exitosamente' },
+                            },
+                        },
+                    },
+                },
+            },
+            400: { description: 'Error en los datos de entrada' },
+            401: { description: 'Usuario no autenticado o token inválido' },
+            500: { description: 'Error al procesar la solicitud' },
+        },
+    },
+},
+
         '/usuarios/{id_user}': {
             get: {
                 summary: 'Obtener un usuario por ID',
