@@ -21,7 +21,7 @@ function Login() {
       const { token } = response.data;
   
       // Obtener datos del usuario con el token
-      const profileResponse = await axios.get("http://localhost:3000/users/profile", {
+      const profileResponse = await axios.get("http://localhost:3000/usuarios/profile_data", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +38,6 @@ function Login() {
     }
   };
   
-
   return (
     <section className="bg-gradient-to-b from-black to-blue-900 min-h-screen flex items-center justify-center">
       <div className="bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full">

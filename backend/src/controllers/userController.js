@@ -51,7 +51,8 @@ exports.deleteUsuario = (req, res) => {
 
 // Obtener datos del perfil del usuario autenticado
 exports.getProfileData = (req, res) => {
-  const token = req.headers.authorization;
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
   if (!token) {
     return res.status(401).json({ message: "Token no proporcionado" });
   }
