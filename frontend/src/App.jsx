@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddObservation from "./components/pages/main/AddObservation";
 import { AuthProvider } from "./context/AuthContext";
+import Validations from "./components/pages/main/Validations";
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
               </ProtectedRoute>
             } 
           />
+            <Route 
+            path="/validations" 
+            element={
+                <ProtectedRoute>
+                <Validations />
+                </ProtectedRoute>
+            } 
+            />
         </Routes>
       </Router>
     </AuthProvider>

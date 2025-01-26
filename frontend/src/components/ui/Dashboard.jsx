@@ -103,9 +103,9 @@ const Dashboard = () => {
           <div className="space-y-4">
             {publications.map((pub) => (
               <div key={pub.id} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-bold">{pub.title}</h3>
-                <p>{pub.description}</p>
-                <span className="text-sm text-gray-500">{pub.date}</span>
+                <h3 className="font-bold">{pub.description}</h3>
+                <p>{pub.location}</p>
+                <span className="text-sm text-gray-500">{pub.timestamp}</span>
               </div>
             ))}
           </div>
@@ -115,8 +115,9 @@ const Dashboard = () => {
         <div className="w-1/4 bg-gray-800 text-white p-4 space-y-4">
           <h2 className="text-xl font-bold">Sistema de Puntos</h2>
           <div className="bg-gray-700 p-4 rounded-lg">
-            <p className="text-lg font-semibold">Puntos actuales: {points}</p>
-            {points > 20 && (
+            <p className="text-lg font-semibold">Puntos actuales:</p>
+            <h1>{points}</h1>
+            {points > 20 && user?.rol !== "validador" && (
               <button className="w-full bg-green-600 py-2 mt-4 rounded-lg hover:bg-green-700">
                 Solicitar ser Validador
               </button>
