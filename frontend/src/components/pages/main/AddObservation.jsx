@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
-import "../../../styles/AddObservation.css";
+import { useNavigate } from "react-router-dom";
 
-const AddObservation = ({ userId }) => {
+const AddObservation = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     timestamp: "",
     location: "",
@@ -52,93 +54,135 @@ const AddObservation = ({ userId }) => {
       });
 
       alert("Observación registrada con éxito.");
+      navigate("/dashboard"); // Redirigir al dashboard después de registrar
     } catch (error) {
       console.error("Error al registrar la observación:", error);
       alert("Hubo un error al registrar la observación.");
     }
   };
 
+  const handleCancel = () => {
+    navigate(-1); // Redirigir a la página anterior
+  };
+
   return (
-    <div className="add-observation-container">
-      <h1>Registrar Observación</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Fecha y hora:
-          <input
-            type="datetime-local"
-            name="timestamp"
-            value={formData.timestamp}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Ubicación:
-          <input
-            type="text"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Condiciones del cielo:
-          <input
-            type="text"
-            name="sky_conditions"
-            value={formData.sky_conditions}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Equipo utilizado:
-          <input
-            type="text"
-            name="equipment_used"
-            value={formData.equipment_used}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Descripción:
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </label>
-        <label>
-          Objeto Astronómico:
-          <select
-            name="id_object"
-            value={formData.id_object}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>
-              Selecciona un objeto
-            </option>
-            {objects.map((object) => (
-              <option key={object.id_object} value={object.id_object}>
-                {object.oficial_name} ({object.object_type})
+    <div className="min-h-screen bg-gray-800 text-white flex justify-center items-center py-10 px-4">
+      <div className="bg-gray-100 text-gray-800 rounded-lg shadow-lg w-full max-w-3xl p-8">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Registrar Observación
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Fecha y hora:
+            </label>
+            <input
+              type="datetime-local"
+              name="timestamp"
+              value={formData.timestamp}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">Ubicación:</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Condiciones del cielo:
+            </label>
+            <input
+              type="text"
+              name="sky_conditions"
+              value={formData.sky_conditions}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Equipo utilizado:
+            </label>
+            <input
+              type="text"
+              name="equipment_used"
+              value={formData.equipment_used}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Descripción:
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Objeto Astronómico:
+            </label>
+            <select
+              name="id_object"
+              value={formData.id_object}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+              required
+            >
+              <option value="" disabled>
+                Selecciona un objeto
               </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Fotografías (máximo 5):
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </label>
-        <button type="submit">Registrar Observación</button>
-      </form>
+              {objects.map((object) => (
+                <option key={object.id_object} value={object.id_object}>
+                  {object.oficial_name} ({object.object_type})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Fotografías (máximo 5):
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
+            >
+              Registrar Observación
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

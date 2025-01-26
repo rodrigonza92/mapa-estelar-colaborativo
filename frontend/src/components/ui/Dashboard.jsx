@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import HeaderMain from "./HeaderMain";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [points, setPoints] = useState(0);
   const [publications, setPublications] = useState([]);
   const [rankings, setRankings] = useState([]);
@@ -58,6 +60,10 @@ const Dashboard = () => {
     fetchRankings();
   }, []);
 
+  const handleCreateObservation = () => {
+    navigate("/add-observation");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -68,7 +74,10 @@ const Dashboard = () => {
         {/* Columna izquierda */}
         <div className="w-1/4 bg-gray-800 text-white p-4 space-y-4">
           <h2 className="text-xl font-bold">Panel de Navegación</h2>
-          <button className="w-full bg-blue-600 py-2 rounded-lg hover:bg-blue-700">
+          <button
+            className="w-full bg-blue-600 py-2 rounded-lg hover:bg-blue-700"
+            onClick={handleCreateObservation}
+          >
             Crear Nueva Observación
           </button>
           <div>
@@ -118,7 +127,7 @@ const Dashboard = () => {
             <ul className="space-y-2">
               {rankings.map((user, index) => (
                 <li key={index}>
-                  {index + 1}. {user.name} - {user.points} puntos
+                  {index + 1}. {user.first_name} {user.last_name} - {user.points} puntos
                 </li>
               ))}
             </ul>
