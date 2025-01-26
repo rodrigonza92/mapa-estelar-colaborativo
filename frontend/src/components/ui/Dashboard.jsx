@@ -13,14 +13,19 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPoints = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/usuarios/${user.id}`);
+        const response = await axios.get('http://localhost:3000/usuarios/profile_data', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         setPoints(response.data.points);
       } catch (error) {
         console.error("Error al obtener los puntos del usuario:", error);
       }
     };
     fetchPoints();
-  }, [user.id]);
+  }, []);
+  
 
   // Obtener publicaciones recientes
   useEffect(() => {
