@@ -70,7 +70,7 @@ const swaggerSpec = {
                                     last_name: { type: 'string', example: 'Doe' },
                                     email: { type: 'string', example: 'john.doe@example.com' },
                                     password: { type: 'string', example: 'password123' },
-                                    rol: { type: 'string', example: 'user' },
+                                    rol: { type: 'string', example: 'principiante' },
                                 },
                             },
                         },
