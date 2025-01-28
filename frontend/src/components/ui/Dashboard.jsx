@@ -201,6 +201,15 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+        <div className="absolute bottom-4 left-4 text-lg text-white">
+            <p>
+                Bienvenido, <span className="font-bold">{user?.first_name || "Usuario"} {user?.last_name || ""}</span>
+            </p>
+            <p>
+                Rol: <span className="font-bold">{user?.rol || "N/A"}</span>
+            </p>
+        </div>
+
 
         {/* Columna central */}
         <div className="flex-1 bg-gray-100 p-4 space-y-4">
@@ -219,9 +228,9 @@ const Dashboard = () => {
         {/* Columna derecha */}
         <div className="w-1/4 bg-gray-800 text-white p-4 space-y-4">
           <h2 className="text-xl font-bold">Sistema de Puntos</h2>
-          <div className="bg-gray-700 p-4 rounded-lg">
-            <p className="text-lg font-semibold">Puntos actuales:</p>
-            <h1>{points}</h1>
+        <div className="bg-gray-700 p-4 rounded-lg w-64 h-auto">
+            <p className="text-lg font-semibold text-center">Puntos actuales:</p>
+            <h1 className="text-3xl text-center">{points}</h1>
             {points > 20 && user?.rol !== "validador" && (
               <button className="w-full bg-green-600 py-2 mt-4 rounded-lg hover:bg-green-700">
                 Solicitar ser Validador
