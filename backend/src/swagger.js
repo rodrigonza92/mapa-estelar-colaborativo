@@ -591,6 +591,44 @@ const swaggerSpec = {
     },
 },
 
+'/observaciones/{id_user}': {
+    get: {
+        summary: 'Obtener una observación por ID de Usuario',
+        tags: ['Observaciones'],
+        parameters: [
+            {
+                in: 'path',
+                name: 'id_user',
+                required: true,
+                schema: { type: 'integer' },
+                description: 'ID único del usuario',
+            },
+        ],
+        responses: {
+            200: {
+                description: 'Detalles de la observación',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                id_observacion: { type: 'integer' },
+                                titulo: { type: 'string' },
+                                descripcion: { type: 'string' },
+                                fecha: { type: 'string', format: 'date' },
+                                id_user: { type: 'integer' },
+                                id_object: { type: 'integer' },
+                            },
+                        },
+                    },
+                },
+            },
+            404: { description: 'Observación no encontrada' },
+            500: { description: 'Error al procesar la solicitud' },
+        },
+    },
+},
+
 '/fotografias': {
     get: {
         summary: 'Obtener todas las fotografías',

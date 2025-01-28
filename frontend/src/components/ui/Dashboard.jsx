@@ -10,6 +10,40 @@ const Dashboard = () => {
   const [points, setPoints] = useState(0);
   const [publications, setPublications] = useState([]);
   const [rankings, setRankings] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [observations, setObservations] = useState([]);
+  const [selectedFavorite, setSelectedFavorite] = useState(null);
+  const [selectedObservation, setSelectedObservation] = useState(null);
+
+  // Obtener objetos celestes guardados en favoritos
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/favoritos", {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        setFavorites(response.data.slice(0, 5));
+      } catch (error) {
+        console.error("Error al obtener favoritos:", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
+
+  // Obtener observaciones realizadas por el usuario
+  useEffect(() => {
+    const fetchObservations = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/observaciones/user", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        setObservations(response.data.slice(0, 5));
+      } catch (error) {
+        console.error("Error al obtener observaciones:", error);
+      }
+    };
+    fetchObservations();
+  }, []);
 
   // Obtener puntos del usuario logueado
   useEffect(() => {
@@ -64,6 +98,64 @@ const Dashboard = () => {
     navigate("/add-observation");
   };
 
+  // Renderizar modal para favoritos
+  const renderFavoriteModal = () => {
+    if (!selectedFavorite) return null;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-4 rounded-lg shadow-lg w-1/3">
+          <h2 className="text-xl font-bold">Información del Objeto Celeste</h2>
+          <p><strong>Nombre:</strong> {selectedFavorite.oficial_name}</p>
+          <p><strong>Nombre alternativo:</strong> {selectedFavorite.alternative_name}</p>
+          <p><strong>Tipo de Objeto:</strong> {selectedFavorite.object_type}</p>
+          <p><strong>Constelacion:</strong> {selectedFavorite.constellation}</p>
+          <p><strong>Temporada de mejor visibilidad:</strong> {selectedFavorite.visibility_season}</p>
+          <p><strong>Coordenadas:</strong> {selectedFavorite.coordinates}</p>
+          <p><strong>Magnitud Aparente:</strong> {selectedFavorite.apparent_magnitude}</p>
+          <button
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            onClick={() => setSelectedFavorite(null)}
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Renderizar modal para observaciones
+  const renderObservationModal = () => {
+    if (!selectedObservation) return null;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-4 rounded-lg shadow-lg w-1/3">
+          <h2 className="text-xl font-bold">Editar Observación</h2>
+          <p><strong>Descripción:</strong> {selectedObservation.description}</p>
+          <p><strong>Ubicación:</strong> {selectedObservation.location}</p>
+          <p><strong>Fecha y hora:</strong> {selectedObservation.timestamp}</p>
+          <p><strong>Condiciones del cielo:</strong> {selectedObservation.sky_conditions}</p>
+          <p><strong>Equipamiento utilizado:</strong> {selectedObservation.equipamiento_utilizado}</p>
+          <p><strong>Estado:</strong> {selectedObservation.state}</p>
+          <textarea
+            className="w-full mt-4 p-2 border rounded"
+            defaultValue={selectedObservation.notes}
+          />
+          <button
+            className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            Guardar Cambios
+          </button>
+          <button
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            onClick={() => setSelectedObservation(null)}
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -80,20 +172,33 @@ const Dashboard = () => {
           >
             Crear Nueva Observación
           </button>
+
+          {/* Lista de favoritos */}
           <div>
-            <h3 className="font-semibold mt-4">Búsquedas</h3>
-            <button className="w-full bg-gray-700 py-2 mt-2 rounded-lg hover:bg-gray-600">
-              Buscar Objetos
-            </button>
-            <button className="w-full bg-gray-700 py-2 mt-2 rounded-lg hover:bg-gray-600">
-              Buscar Observaciones
-            </button>
+            <h3 className="text-lg font-bold mt-4">Objetos Favoritos Guardados</h3>
+            {favorites.map((favorite) => (
+              <button
+                key={favorite.id}
+                className="w-full bg-gray-700 py-2 mt-2 rounded-lg hover:bg-gray-600"
+                onClick={() => setSelectedFavorite(favorite)}
+              >
+                {favorite.oficial_name}
+              </button>
+            ))}
           </div>
+
+          {/* Historial de observaciones */}
           <div>
-            <h3 className="font-semibold mt-4">Favoritos</h3>
-            <button className="w-full bg-gray-700 py-2 mt-2 rounded-lg hover:bg-gray-600">
-              Ver Historial de Favoritos
-            </button>
+            <h3 className="text-lg font-bold mt-4">Historial de Observaciones</h3>
+            {observations.map((observation) => (
+              <button
+                key={observation.id}
+                className="w-full bg-gray-700 py-2 mt-2 rounded-lg hover:bg-gray-600"
+                onClick={() => setSelectedObservation(observation)}
+              >
+                {observation.description}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -135,6 +240,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* Modals */}
+      {renderFavoriteModal()}
+      {renderObservationModal()}
     </div>
   );
 };

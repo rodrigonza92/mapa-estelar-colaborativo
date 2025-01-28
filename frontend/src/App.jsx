@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AddObservation from "./components/pages/main/AddObservation";
 import { AuthProvider } from "./context/AuthContext";
 import Validations from "./components/pages/main/Validations";
+import ObjectPage from "./components/pages/main/ObjectPage";
 
 function App() {
   return (
@@ -17,30 +18,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route 
-            path="/main" 
-            element={
-              <ProtectedRoute>
-                <Main />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/add-observation" 
-            element={
-              <ProtectedRoute>
-                <AddObservation />
-              </ProtectedRoute>
-            } 
-          />
-            <Route 
-            path="/validations" 
-            element={
-                <ProtectedRoute>
-                <Validations />
-                </ProtectedRoute>
-            } 
-            />
+          <Route path="/main" element={<ProtectedRoute><Main /></ProtectedRoute>}/>
+          <Route path="/add-observation" element={<ProtectedRoute><AddObservation /></ProtectedRoute>}/>
+          <Route path="/validations" element={<ProtectedRoute><Validations /></ProtectedRoute>}/>
+          <Route path="/objects" element={<ProtectedRoute><ObjectPage /></ProtectedRoute>}/>
         </Routes>
       </Router>
     </AuthProvider>

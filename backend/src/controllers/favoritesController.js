@@ -1,31 +1,64 @@
 const db = require('../config/database');
+const jwt = require("jsonwebtoken");
 
-// Marcar una fotografía como favorita
+// Marcar un objeto como favorita
 exports.markAsFavorite = (req, res) => {
-    const { id_user, id_object } = req.body;
-    const query = 'INSERT INTO Favoritos (id_user, id_object) VALUES (?, ?)';
-    db.query(query, [id_user, id_object], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Fotografía marcada como favorita' });
+    const { id_object } = req.body;
+
+    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token no proporcionado' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Token inválido o expirado' });
+        }
+
+        const id_user = decoded.id_user;
+
+        const query = 'INSERT INTO Favoritos ( id_object, id_user) VALUES (?, ?)';
+        db.query(query, [ id_object, id_user,], (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.status(201).json({ message: 'Objeto agregado a favoritos' });
+        });
     });
 };
 
-// Quitar una fotografía de favoritos
+// Quitar un objeto de favoritos
 exports.removeFromFavorites = (req, res) => {
     const { id_user, id_object } = req.body;
     const query = 'DELETE FROM Favoritos WHERE id_user = ? AND id_object = ?';
     db.query(query, [id_user, id_object], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Fotografía eliminada de favoritos' });
+        res.json({ message: 'Objeto eliminada de favoritos' });
     });
 };
 
 // Obtener las fotografías favoritas de un usuario
 exports.getFavoritesByUser = (req, res) => {
-    const { id_user } = req.params;
-    const query = 'SELECT * FROM Fotografia WHERE id_img IN (SELECT id_object FROM Favoritos WHERE id_user = ?)';
-    db.query(query, [id_user], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  
+    if (!token) {
+      return res.status(401).json({ message: "Token no proporcionado" });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id_user;
+
+      const query = "SELECT Objeto.oficial_name, Objeto.alternative_name, Objeto.object_type, Objeto.constellation, Objeto.visibility_season, Objeto.coordinates, Objeto.apparent_magnitude FROM Favoritos INNER JOIN Objeto ON Favoritos.id_object = Objeto.id_object WHERE Favoritos.id_user = ?";
+      db.query(query, [userId], (err, results) => {
+        if (err) {
+          console.error("Error al consultar la base de datos:", err);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
+  
         res.json(results);
-    });
+      });
+    } catch (err) {
+      console.error("Error al verificar el token:", err);
+      return res.status(401).json({ message: "Token inválido o expirado" });
+    }
 };
