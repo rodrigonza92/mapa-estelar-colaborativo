@@ -30,7 +30,6 @@ const ValidationView = () => {
   // Manejar validación de la observación
   const handleValidation = async (observationId, newState) => {
     try {
-      // Actualizar estado de la observación en la API
       await axios.put(
         `http://localhost:3000/observaciones/${observationId}`,
         { state: newState },
@@ -41,7 +40,6 @@ const ValidationView = () => {
         }
       );
 
-      // Notificar al usuario propietario
       await axios.post(
         `http://localhost:3000/notificaciones`,
         {

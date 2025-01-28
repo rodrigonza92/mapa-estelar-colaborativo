@@ -25,6 +25,12 @@ function HeaderMain() {
                 Principal
               </Link>
             </li>
+            {/* Informacion de todos los Objetos disponibles */}
+            <li>
+              <Link to="/objects" className="header-link hover:text-gray-300">
+                Objetos
+              </Link>
+            </li>
             {/* Mostrar "Validaciones" solo si el usuario es un validador */}
             {user?.rol === "validador" && (
               <li>
