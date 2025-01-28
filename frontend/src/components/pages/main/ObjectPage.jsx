@@ -9,6 +9,13 @@ function ObjectsPage() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [filteredObjects, setFilteredObjects] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState({
+    type: "",
+    constellation: "",
+    magnitude: "",
+    visibilitySeason: "",
+  });
 
   // Obtener todos los objetos
   useEffect(() => {
@@ -22,6 +29,28 @@ function ObjectsPage() {
     };
     fetchObjects();
   }, []);
+
+  // Filtrar los objetos dinámicamente cuando cambian los criterios de búsqueda
+  useEffect(() => {
+    const filtered = objects.filter((object) => {
+      const magnitude = parseFloat(object.magnitude) || 0;
+      const matchesType = searchCriteria.type === "" || object.object_type.toLowerCase().includes(searchCriteria.type.toLowerCase());
+      const matchesConstellation = searchCriteria.constellation === "" || object.constellation.toLowerCase().includes(searchCriteria.constellation.toLowerCase());
+      const matchesMagnitude = searchCriteria.magnitude === "" || (!isNaN(object.magnitude) && parseFloat(object.magnitude) <= parseFloat(searchCriteria.magnitude));
+      const matchesVisibilitySeason = searchCriteria.visibilitySeason === "" || object.visibility_season.toLowerCase().includes(searchCriteria.visibilitySeason.toLowerCase());
+      return matchesType && matchesConstellation && matchesMagnitude && matchesVisibilitySeason;
+    });
+    setFilteredObjects(filtered);
+  }, [searchCriteria, objects]);
+
+  // Manejar cambios en los filtros de búsqueda
+  const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setSearchCriteria((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   // Agregar un objeto a favoritos
   const handleAddToFavorites = async (id_object) => {
@@ -72,15 +101,68 @@ function ObjectsPage() {
           </div>
         )}
 
+        {/* Campo de búsqueda */}
+        <div className="bg-white p-6 rounded-lg shadow mb-8">
+          <h2 className="text-xl font-bold mb-4">Buscar Objetos</h2>
+          <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <input
+              type="text"
+              name="type"
+              placeholder="Tipo de objeto"
+              value={searchCriteria.type}
+              onChange={handleSearchChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            <input
+              type="text"
+              name="constellation"
+              placeholder="Constelación"
+              value={searchCriteria.constellation}
+              onChange={handleSearchChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            <input
+              type="number"
+              name="magnitude"
+              placeholder="Magnitud aparente"
+              value={searchCriteria.magnitude}
+              onChange={handleSearchChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            <input
+              type="text"
+              name="visibilitySeason"
+              placeholder="Temporada de Visibilidad"
+              value={searchCriteria.visibilitySeason}
+              onChange={handleSearchChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+          </form>
+        </div>
+
+        {/* Lista de objetos filtrados */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {objects.map((object) => (
+          {filteredObjects.map((object) => (
             <div key={object.id_object} className="bg-gray-800 shadow-lg rounded-lg p-6">
               <h2 className="text-xl font-bold mb-2 text-white">{object.oficial_name}</h2>
-              <p className="text-gray-300"><strong>Nombre alternativo:</strong> {object.alternative_name}</p>
-              <p className="text-gray-300"><strong>Tipo de Objeto:</strong> {object.object_type}</p>
-              <p className="text-gray-300"><strong>Constelación:</strong> {object.constellation}</p>
-              <p className="text-gray-300"><strong>Temporada de Visibilidad:</strong> {object.visibility_season}</p>
-              <p className="text-gray-300"><strong>Coordenadas:</strong> {object.coordinates}</p>
+              <p className="text-gray-300">
+                <strong>Nombre alternativo:</strong> {object.alternative_name}
+              </p>
+              <p className="text-gray-300">
+                <strong>Tipo de Objeto:</strong> {object.object_type}
+              </p>
+              <p className="text-gray-300">
+                <strong>Constelación:</strong> {object.constellation}
+              </p>
+              <p className="text-gray-300">
+                <strong>Temporada de Visibilidad:</strong> {object.visibility_season}
+              </p>
+              <p className="text-gray-300">
+                <strong>Coordenadas:</strong> {object.coordinates}
+              </p>
+              <p className="text-gray-300">
+                <strong>Magnitud aparente:</strong> {object.apparent_magnitude}
+              </p>
 
               {/* Botón para agregar a favoritos */}
               <button
