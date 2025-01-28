@@ -42,7 +42,7 @@ function HeaderMain() {
         {/* Botones de Acción */}
         <div className="header-actions flex space-x-6">
           <Link
-            to="/perfil"
+            to="/profile"
             className="header-profile bg-indigo-600 px-5 py-3 rounded hover:bg-indigo-500"
           >
             Perfil

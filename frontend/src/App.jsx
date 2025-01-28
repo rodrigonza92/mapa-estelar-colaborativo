@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AddObservation from "./components/pages/main/AddObservation";
 import { AuthProvider } from "./context/AuthContext";
 import Validations from "./components/pages/main/Validations";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -38,6 +39,14 @@ function App() {
             element={
                 <ProtectedRoute>
                 <Validations />
+                </ProtectedRoute>
+            } 
+            />
+            <Route 
+            path="/profile" 
+            element={
+                <ProtectedRoute>
+                <Profile />
                 </ProtectedRoute>
             } 
             />

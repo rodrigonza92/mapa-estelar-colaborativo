@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const jwt = require("jsonwebtoken");
 
 // Obtener todas las observaciones
 exports.getObservaciones = (req, res) => {
@@ -48,4 +49,33 @@ exports.deleteObservacion = (req, res) => {
     });
 };
 
-
+// Obtener una observación por ID de Usuario
+exports.getObservacionByUser = (req, res) => {
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  
+    if (!token) {
+      return res.status(401).json({ message: "Token no proporcionado" });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id_user;
+  
+      const query = "SELECT * FROM Observacion WHERE id_user = ?";
+      db.query(query, [userId], (err, results) => {
+        if (err) {
+          console.error("Error al consultar la base de datos:", err);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
+  
+        if (results.length === 0) {
+          return res.status(404).json({ message: "No se encontraron observaciones para este usuario" });
+        }
+  
+        res.json(results);
+      });
+    } catch (err) {
+      console.error("Error al verificar el token:", err);
+      return res.status(401).json({ message: "Token inválido o expirado" });
+    }
+  };
