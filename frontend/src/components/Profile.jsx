@@ -25,7 +25,7 @@ const Profile = () => {
 
     const fetchObservations = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/observaciones", {
+        const response = await axios.get("http://localhost:3000/observaciones/user", {
           params: { userId: user.id },
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
