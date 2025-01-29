@@ -11,9 +11,9 @@ exports.getObservaciones = (req, res) => {
 
 // Crear una observación
 exports.createObservacion = (req, res) => {
-    const { date, location, description, id_user, id_objeto } = req.body;
-    const query = 'INSERT INTO Observacion (date, location, description, id_user, id_object) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [date, location, description, id_user, id_objeto], (err, results) => {
+    const { timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object } = req.body;
+    const query = 'INSERT INTO Observacion (timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(query, [timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.status(201).json({ message: 'Observación creada', id: results.insertId });
     });

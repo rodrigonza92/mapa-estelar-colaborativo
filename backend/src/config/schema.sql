@@ -61,9 +61,7 @@ CREATE TABLE Fotografia (
     applied_processing TEXT,
     state VARCHAR(50),
     id_observation INT,
-    id_validation INT,
-    FOREIGN KEY (id_observation) REFERENCES Observacion(id_observation),
-    FOREIGN KEY (id_validation) REFERENCES Validacion(id_validation)
+    FOREIGN KEY (id_observation) REFERENCES Observacion(id_observation)
 );
 
 -- Tabla Favoritos
