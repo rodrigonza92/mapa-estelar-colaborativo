@@ -11,13 +11,22 @@ const AddObservation = () => {
     timestamp: "",
     location: "",
     sky_conditions: "",
-    equipment_used: "",
+    equipamiento_utilizado: "",
     description: "",
     id_object: "",
+    id_user: "",
+    state: "",
   });
 
   const [photos, setPhotos] = useState([]);
   const [objects, setObjects] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [photoDetails, setPhotoDetails] = useState({
+    file: null,
+    exposure_time: "",
+    iso: "",
+    processing: "",
+  });
 
   useEffect(() => {
     const fetchObjects = async () => {
@@ -36,33 +45,101 @@ const AddObservation = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e) => {
-    setPhotos([...e.target.files]);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setPhotoDetails({
+      file: null,
+      exposure_time: "",
+      iso: "",
+      processing: "",
+    });
+  };
+
+  const handlePhotoChange = (e) => {
+    setPhotoDetails({ ...photoDetails, file: e.target.files[0] });
+  };
+
+  const handlePhotoDetailsChange = (e) => {
+    setPhotoDetails({ ...photoDetails, [e.target.name]: e.target.value });
+  };
+
+  const handleAddPhoto = () => {
+    if (!photoDetails.file) {
+      alert("Por favor selecciona una fotografía.");
+      return;
+    }
+
+    // Renombrar la foto
+    const renamedFile = new File(
+      [photoDetails.file],
+      `${Date.now()}_${photoDetails.file.name}`,
+      { type: photoDetails.file.type }
+    );
+
+    // Crear el objeto de la foto
+    const photoData = {
+      file: renamedFile,
+      exposure_time: photoDetails.exposure_time,
+      iso: photoDetails.iso,
+      processing: photoDetails.processing,
+    };
+
+    setPhotos([...photos, photoData]);
+    handleCloseModal();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
+      // Construir los datos de la observación
       const observationData = {
-        ...formData,
-        id_user: user.id,
-        state: "Privada",
+        timestamp: formData.timestamp,
+        description: formData.description,
+        location: formData.location,
+        sky_conditions: formData.sky_conditions,
+        equipamiento_utilizado: formData.equipment_used,
+        state: formData.state || "Privada",
+        id_user: user.id_user,
+        id_object: formData.id_object,
       };
-
-      await axios.post("http://localhost:3000/observaciones", observationData, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      alert("Observación registrada con éxito.");
-      navigate("/dashboard"); // Redirigir al dashboard después de registrar
+  
+      // Crear la observación en el servidor
+      const observationResponse = await axios.post(
+        "http://localhost:3000/observaciones",
+        observationData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+  
+      const observationId = observationResponse.data.id;
+  
+      for (const photo of photos) {
+        const photoData = {
+          img_path: `/uploads/${photo.file.name}`,
+          exposure_time: photo.exposure_time,
+          ISO: photo.iso,
+          applied_processing: photo.processing,
+          state: "Pendiente",
+          id_observation: observationId,
+        };
+  
+        await axios.post("http://localhost:3000/fotografias", photoData, {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+  
+      // Notificar éxito y redirigir
+      alert("Observación y fotografías registradas con éxito.");
+      navigate("/main");
     } catch (error) {
-      console.error("Error al registrar la observación:", error);
-      alert("Hubo un error al registrar la observación.");
+      console.error("Error al registrar la observación o fotografías:", error);
+      alert("Hubo un error al registrar la observación o las fotografías.");
     }
-  };
+  };  
 
   const handleCancel = () => {
-    navigate(-1); // Redirigir a la página anterior
+    navigate(-1);
   };
 
   return (
@@ -72,6 +149,7 @@ const AddObservation = () => {
           Registrar Observación
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Formulario registrar observacion */}
           <div>
             <label className="block text-sm font-semibold mb-2">
               Fecha y hora:
@@ -158,14 +236,89 @@ const AddObservation = () => {
             <label className="block text-sm font-semibold mb-2">
               Fotografías (máximo 5):
             </label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
-            />
           </div>
+
+          {/* Modal registrar fotografia */}
+          <div>
+            <button
+              type="button"
+              onClick={handleOpenModal}
+              className="w-full px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
+            >
+              Agregar Fotografía
+            </button>
+          </div>
+
+          {isModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <h2 className="text-xl font-bold mb-4">Agregar Fotografía</h2>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Archivo:
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Tiempo de exposición:
+                    </label>
+                    <input
+                      type="text"
+                      name="exposure_time"
+                      value={photoDetails.exposure_time}
+                      onChange={handlePhotoDetailsChange}
+                      className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">ISO:</label>
+                    <input
+                      type="text"
+                      name="iso"
+                      value={photoDetails.iso}
+                      onChange={handlePhotoDetailsChange}
+                      className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Procesamiento aplicado:
+                    </label>
+                    <textarea
+                      name="processing"
+                      value={photoDetails.processing}
+                      onChange={handlePhotoDetailsChange}
+                      className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-800 focus:ring focus:ring-blue-500"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-4 mt-6">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddPhoto}
+                    className="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700"
+                  >
+                    Guardar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="flex justify-end space-x-4">
             <button
               type="button"
