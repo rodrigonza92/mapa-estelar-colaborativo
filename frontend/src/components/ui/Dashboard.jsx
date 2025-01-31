@@ -70,7 +70,12 @@ const Dashboard = () => {
         const response = await axios.get("http://localhost:3000/observaciones", {
           params: { state: "Pública", orderBy: "fecha", limit: 10 },
         });
-        setPublications(response.data);
+
+        const sortedPublications = response.data.sort(
+            (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+        
+        setPublications(sortedPublications);
       } catch (error) {
         console.error("Error al obtener las publicaciones:", error);
       }
@@ -214,9 +219,9 @@ const Dashboard = () => {
         {/* Columna central */}
         <div className="flex-1 bg-gray-100 p-4 space-y-4">
           <h2 className="text-2xl font-bold text-center">Novedades</h2>
-          <div className="space-y-4">
-            {publications.map((pub) => (
-              <div key={pub.id} className="bg-white p-4 rounded-lg shadow">
+          <div className="y-4 w-auto bg-white p-4 overflow-y-auto h-[calc(100vh-80px)]">
+            {publications.map((pub, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow">
                 <h3 className="font-bold">{pub.description}</h3>
                 <p>{pub.location}</p>
                 <span className="text-sm text-gray-500">{pub.timestamp}</span>
