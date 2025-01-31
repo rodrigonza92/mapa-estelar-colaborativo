@@ -32,24 +32,40 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { first_name, last_name, email, password, rol } = req.body;
-
-  if (!first_name || !last_name || !email || !password || !rol) {
-    return res.status(400).send('Todos los campos son requeridos.');
-  }
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = await createUsuario({ first_name, last_name, email, password: hashedPassword, rol });
-
-    res.status(201).send({ id: userId, message: 'Usuario creado exitosamente.' });
-  } catch (err) {
-    if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(400).send('El correo electrónico ya está registrado.');
+    const { first_name, last_name, email, password, rol } = req.body;
+  
+    // Validación de campos requeridos
+    if (!first_name || !last_name || !email || !password || !rol) {
+      return res.status(400).json({ message: "Todos los campos son requeridos." });
     }
-    console.error('Error en registro:', err);
-    res.status(500).send('Error al procesar la solicitud.');
-  }
+  
+    try {
+      // Encriptar la contraseña
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Intentar crear un nuevo usuario
+      const userId = await createUsuario({
+        first_name,
+        last_name,
+        email,
+        password: hashedPassword,
+        rol,
+      });
+  
+      // Responder con éxito
+      return res.status(201).json({
+        id: userId,
+        message: "Usuario creado exitosamente.",
+      });
+    } catch (err) {
+      if (err.code === "ER_DUP_ENTRY") {
+        // Código de error para entradas duplicadas (como un email ya existente)
+        return res.status(409).json({ message: "El correo electrónico ya está registrado." });
+      }
+  
+      console.error("Error en registro:", err);
+      return res.status(500).json({ message: "Error al procesar la solicitud." });
+    }
 };
 
 module.exports = { login, register };

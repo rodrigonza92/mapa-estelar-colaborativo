@@ -40,21 +40,7 @@ CREATE TABLE Observacion (
     id_user INT NOT NULL,
     id_object INT NOT NULL,
     FOREIGN KEY (id_user) REFERENCES Usuario(id_user),
-    FOREIGN KEY (id_object) REFERENCES Objeto_Celeste(id_object)
-);
-
--- Tabla Fotografía
-CREATE TABLE Fotografia (
-    id_img INT AUTO_INCREMENT PRIMARY KEY,
-    img_path VARCHAR(255) NOT NULL,
-    exposure_time FLOAT,
-    ISO INT,
-    applied_processing TEXT,
-    state VARCHAR(50),
-    id_observation INT,
-    id_validation INT,
-    FOREIGN KEY (id_observation) REFERENCES Observacion(id_observation),
-    FOREIGN KEY (id_validation) REFERENCES Validacion(id_validation)
+    FOREIGN KEY (id_object) REFERENCES Objeto(id_object)
 );
 
 -- Tabla Validación
@@ -66,12 +52,24 @@ CREATE TABLE Validacion (
     FOREIGN KEY (id_validador) REFERENCES Usuario(id_user)
 );
 
+-- Tabla Fotografía
+CREATE TABLE Fotografia (
+    id_img INT AUTO_INCREMENT PRIMARY KEY,
+    img_path VARCHAR(255) NOT NULL,
+    exposure_time FLOAT,
+    ISO INT,
+    applied_processing TEXT,
+    state VARCHAR(50),
+    id_observation INT,
+    FOREIGN KEY (id_observation) REFERENCES Observacion(id_observation)
+);
+
 -- Tabla Favoritos
 CREATE TABLE Favoritos (
     id_favorite INT AUTO_INCREMENT PRIMARY KEY,
     id_user INT NOT NULL,
     id_object INT NOT NULL,
     FOREIGN KEY (id_user) REFERENCES Usuario(id_user),
-    FOREIGN KEY (id_object) REFERENCES Objeto_Celeste(id_object)
+    FOREIGN KEY (id_object) REFERENCES Objeto(id_object)
 );
 

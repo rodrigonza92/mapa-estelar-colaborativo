@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,13 +17,27 @@ function Login() {
         email,
         password,
       });
-      localStorage.setItem("token", response.data.token);
+  
+      const { token } = response.data;
+  
+      // Obtener datos del usuario con el token
+      const profileResponse = await axios.get("http://localhost:3000/usuarios/profile_data", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const user = profileResponse.data;
+  
+      // Pasar token y datos del usuario al contexto
+      login(user, token);
       navigate("/main");
     } catch (err) {
+      console.error("Error al iniciar sesión:", err);
       setError("Credenciales incorrectas");
     }
   };
-
+  
   return (
     <section className="bg-gradient-to-b from-black to-blue-900 min-h-screen flex items-center justify-center">
       <div className="bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full">
@@ -73,12 +89,12 @@ function Login() {
         </form>
         <p className="text-gray-400 text-sm text-center mt-4">
           ¿No tienes una cuenta?{" "}
-          <a
-            href="/signup"
-            className="text-blue-500 hover:underline hover:text-blue-400"
+          <span
+            onClick={() => navigate("/register")}
+            className="text-blue-500 hover:underline hover:text-blue-400 cursor-pointer"
           >
             Regístrate aquí
-          </a>
+          </span>
         </p>
       </div>
     </section>

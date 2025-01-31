@@ -8,7 +8,7 @@ const getUsuarioByEmail = (email) => {
       if (err) {
         return reject(err);
       }
-      resolve(results[0]); // Asumimos que solo hay un usuario con ese email
+      resolve(results[0]);
     });
   });
 };
@@ -28,7 +28,7 @@ const createUsuario = (user) => {
         if (err) {
           return reject(err);
         }
-        resolve(results.insertId); // Retorna el ID del nuevo usuario
+        resolve(results.insertId);
       }
     );
   });

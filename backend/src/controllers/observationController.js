@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const jwt = require("jsonwebtoken");
 
 // Obtener todas las observaciones
 exports.getObservaciones = (req, res) => {
@@ -10,9 +11,9 @@ exports.getObservaciones = (req, res) => {
 
 // Crear una observación
 exports.createObservacion = (req, res) => {
-    const { date, location, description, id_user, id_objeto } = req.body;
-    const query = 'INSERT INTO Observacion (date, location, description, id_user, id_object) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [date, location, description, id_user, id_objeto], (err, results) => {
+    const { timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object } = req.body;
+    const query = 'INSERT INTO Observacion (timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(query, [timestamp, location, sky_conditions, equipamiento_utilizado, description, state, id_user, id_object], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.status(201).json({ message: 'Observación creada', id: results.insertId });
     });
@@ -48,4 +49,33 @@ exports.deleteObservacion = (req, res) => {
     });
 };
 
-
+// Obtener una observación por ID de Usuario
+exports.getObservacionByUser = (req, res) => {
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  
+    if (!token) {
+      return res.status(401).json({ message: "Token no proporcionado" });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id_user;
+  
+      const query = "SELECT * FROM Observacion WHERE id_user = ?";
+      db.query(query, [userId], (err, results) => {
+        if (err) {
+          console.error("Error al consultar la base de datos:", err);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
+  
+        if (results.length === 0) {
+          return res.status(404).json({ message: "No se encontraron observaciones para este usuario" });
+        }
+  
+        res.json(results);
+      });
+    } catch (err) {
+      console.error("Error al verificar el token:", err);
+      return res.status(401).json({ message: "Token inválido o expirado" });
+    }
+  };
