@@ -1,8 +1,7 @@
 import React from "react";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
-import WelcomeSection from "./pages/WelcomeSection";
-import FeaturedObjects from "./pages/home/FeaturedObjects";
+import WelcomeSection from "./pages/home/WelcomeSection";
 import RecentObservations from "./pages/home/RecentObservations";
 
 function Home() {
@@ -10,7 +9,6 @@ function Home() {
     <div>
       <Header />
       <WelcomeSection />
-      <FeaturedObjects />
       <RecentObservations />
       <Footer />
     </div>

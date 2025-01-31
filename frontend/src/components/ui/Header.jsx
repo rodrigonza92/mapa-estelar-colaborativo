@@ -8,21 +8,6 @@ function Header() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo / Nombre del Sistema */}
         <h1 className="text-2xl font-bold">Mapa Estelar</h1>
-        
-        {/* Navegación */}
-        <nav>
-          <ul className="flex space-x-6">
-            <li>
-              <Link to="/observations" className="hover:text-gray-400">Observaciones</Link>
-            </li>
-            <li>
-              <Link to="/info" className="hover:text-gray-400">Información</Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:text-gray-400">Sobre Nosotros</Link>
-            </li>
-          </ul>
-        </nav>
 
         {/* Botones de Acción */}
         <div className="flex space-x-4">
