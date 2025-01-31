@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import background from "../assets/background.jpg";
 
 const Profile = () => {
@@ -10,6 +11,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -153,6 +155,12 @@ const Profile = () => {
               className="mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition duration-300"
             >
               Editar Perfil
+            </button>
+            <button
+                onClick={() => navigate("/main")}
+                className="px-6 py-3 bg-gray-800 hover:bg-gray-600 text-white font-semibold rounded-lg transition duration-300"
+            >
+                Volver atrás
             </button>
           </div>
         )}
