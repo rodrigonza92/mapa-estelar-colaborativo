@@ -1,0 +1,15 @@
+{
+  "name": "mapa-estelar-colaborativo",
+  "version": "1.0.0",
+  "description": "Este proyecto es una plataforma web diseñada para crear un atlas celeste colaborativo que permita a astrónomos aficionados y profesionales compartir, registrar y validar observaciones astronómicas y fotografías de manera estructurada. El desarrollo del proyecto sigue la metodología ágil Scrum como parte del Simulacro para la asignatura de Programación 3. El objetivo es centralizar la información astronómica para facilitar su consulta y validación.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.0.11"
+  }
+}
