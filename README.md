@@ -44,6 +44,28 @@ El proyecto se desarrolla utilizando **Scrum**, con dos sprints principales:
 
 Cada sprint incluye reuniones de planificación, revisiones y retrospectivas. El backlog es actualizado tras cada revisión.
 
+**Pruebas Unitarias**
+Se implementaron pruebas unitarias para verificar el correcto funcionamiento de las funcionalidades principales de la API. Las pruebas se realizan utilizando Jest y Supertest para simular las solicitudes HTTP. A continuación se describen los 4 tests implementados:
+
+**Prueba para crear un usuario**
+
+Objetivo: Verificar que el endpoint de creación de usuario (POST /usuarios) responde correctamente cuando se envían los datos requeridos (nombre, apellido, email, contraseña, rol).
+Expectativa: La respuesta debe ser un código de estado 201 y un mensaje que confirme la creación del usuario.
+Prueba para obtener todos los usuarios
+
+Objetivo: Verificar que el endpoint de obtención de usuarios (GET /usuarios) devuelve todos los usuarios correctamente.
+Expectativa: La respuesta debe ser un código de estado 200 y una lista de usuarios.
+Prueba para obtener un usuario por ID
+
+Objetivo: Validar que el endpoint de obtención de un usuario específico (GET /usuarios/:id) funcione correctamente al pasar un ID válido.
+Expectativa: La respuesta debe ser un código de estado 200 y la información del usuario solicitado.
+Prueba para actualizar un usuario
+
+Objetivo: Asegurar que el endpoint de actualización de usuario (PUT /usuarios/:id) funcione correctamente al modificar los datos de un usuario existente.
+Expectativa: La respuesta debe ser un código de estado 200 y un mensaje indicando que el usuario ha sido actualizado.
+Estas pruebas aseguran que las funcionalidades básicas de la API estén funcionando según lo esperado y que el servidor responda correctamente a las solicitudes.
+
+
 ---
 
 #### **Tecnologías Utilizadas**
